@@ -37,12 +37,18 @@ export default function SignInPage() {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
         });
         if (error) throw error;
-        setMessage("Check your email for the confirmation link!");
+        
+        // If signup is successful and user is immediately confirmed, redirect to dashboard
+        if (data.user && data.session) {
+          router.push("/dashboard");
+        } else {
+          setMessage("Check your email for the confirmation link!");
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,

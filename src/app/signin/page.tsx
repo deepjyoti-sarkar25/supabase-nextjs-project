@@ -37,18 +37,12 @@ export default function SignInPage() {
 
     try {
       if (isSignUp) {
-        const { data, error } = await supabase.auth.signUp({
+        const { error } = await supabase.auth.signUp({
           email,
           password,
         });
         if (error) throw error;
-        
-        // If signup is successful and user is immediately confirmed, redirect to dashboard
-        if (data.user && data.session) {
-          router.push("/dashboard");
-        } else {
-          setMessage("Check your email for the confirmation link!");
-        }
+        setMessage("Check your email for the confirmation link!");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -107,7 +101,6 @@ export default function SignInPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 text-black focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your email"
-                suppressHydrationWarning
               />
             </div>
 
@@ -128,7 +121,6 @@ export default function SignInPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your password"
-                suppressHydrationWarning
               />
             </div>
 
@@ -141,7 +133,6 @@ export default function SignInPage() {
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700"
                 }`}
-                suppressHydrationWarning
               >
                 {isLoading ? (
                   <div className="flex items-center">
@@ -185,7 +176,6 @@ export default function SignInPage() {
                 setMessage(null);
               }}
               className="text-blue-600 hover:text-blue-500 text-sm font-medium"
-              suppressHydrationWarning
             >
               {isSignUp
                 ? "Already have an account? Sign in"
